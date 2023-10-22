@@ -1,0 +1,61 @@
+---
+version: "3.9"
+
+services:
+
+  unifi-network-application:
+    image: lscr.io/linuxserver/unifi-network-application:latest
+    container_name: unifi-network-application
+    #see .env file
+    env_file: .env
+    volumes:
+      - "unifi-config:/config" #most of the logs and configuration files
+    ports:
+      - "8080:8080" #Unifi Device Adoption Port / device communication
+      - "8443:8443" # WEBGUI
+      - "3478:3478/udp" #STUN Port
+      - "10001:10001/udp" #deivce discovery
+      - 1900:1900/udp #optional "discoverable Layer2"
+      - 8843:8843 #optional "Guest Portal HTTPS"
+      - 8880:8880 #optional "Guest Portal HTTP"
+      - 6789:6789 #optional "mobile throughput test"
+      - 5514:5514/udp #optional "remote syslog"
+    restart: unless-stopped
+    depends_on:
+      unifi-db:
+        condition: service_healthy
+    networks:
+      - "net-internal"
+      - "net-unifi-external"
+
+
+
+  unifi-db:
+    image: mongo:4.4 #supported version for unifi
+    container_name: unifi-db
+    volumes:
+      - "unifi-db-data:/data/db"
+      - "./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - "net-internal"
+
+
+
+volumes:
+  unifi-db-data: #DB
+  unifi-config: #unifi config path
+
+
+#seperation for possible use with an reverse proxy
+networks:
+  net-unifi-external:
+    external: true
+  net-internal:
+    internal: true
