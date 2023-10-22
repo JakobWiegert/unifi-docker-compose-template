@@ -16,6 +16,7 @@ This is my docker-compose files for runnning a unifi network appliance with dock
 ## Notes:
 - check out the [Linuxserver](https://github.com/linuxserver/docker-unifi-network-application) Container. The Github page explains most of the settings in detail.
 - this repository is mostly for my own documentation. I like it to have docker-compose files which run without changing much or anything. since most container developer use very simple examples for their docker-compose examples
+- you may need to change the user values in .env. depending on your docker user
 - the external network is only optional. It could be used with a reverse proxy for the WEBGUI. I don't want to expose the backend DB Container to other Containers, like a reverse proxy
 - i tried to make this as secure as possible. But Feedback is realy appreciated. I am only beginning using docker.
 - **This conatiner can be used for home usage with a good feel of safety. If you want to use it in a prod. enviroment, maybe check for missing best practices and security errors.**
