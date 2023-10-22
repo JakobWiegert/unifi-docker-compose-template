@@ -7,7 +7,7 @@ This is my docker-compose files for runnning a unifi network appliance with dock
 
 ## How to use:
 0. Install docker and docker-compose (depending on your distro)
-1. Put the db_password.txt, the docker-compose.yml and the init-mongo.js files in a new directory in the home folder of your docker host user
+1. Put the db_password.txt, the docker-compose.yml and the init-mongo.js files in a new directory in the home folder of your docker host user (you can use "git clone https://github.com/JakobWiegert/unifi-docker-compose-template.git" for this)
 2. Change the password for the database in db_password.txt and init-mongo.js to your desired password
 3. create the network with "docker network create net-unifi-external"
 4. run the container with "docker-compose up -d"
